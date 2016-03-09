@@ -1,16 +1,18 @@
 import os
+import re
 import operator
 from twython import TwythonStreamer
 from nltk.stem.lancaster import LancasterStemmer # I really don't like this stemmer but it's standard
 
 ## As always, wayward home for lost but global variables (and functions!)
-clear = lambda: os.system('cls')
-st = LancasterStemmer()
+clear = lambda: os.system('clear')
+st = LancasterStemmer()	# Not using this currently
 
 class MyStreamer(TwythonStreamer):
 	def staging(self):
 		self.bookshelf = dict()
 		self.count = 0
+		self.stemmer = YasumasaStemmer()
 
 		with open('stop_words.txt','r') as sw:
 			self.stop_words = sw.read().splitlines()
@@ -22,30 +24,42 @@ class MyStreamer(TwythonStreamer):
 			line = data['text']
 			for word in line.split(' '):
 				word = word.lower()
+
+				# Stemming
+				if word in self.stemmer.stems.keys():
+					word = self.stemmer.stems[word]
+
+				# Removing punctuation
+				match = re.search('\w+',word)
+				if match:
+					word = match.group()
+
+				# Stop words
 				if word not in self.stop_words:
 					if word in self.bookshelf.keys():
 						self.bookshelf[word] += 1
 					else:
 						self.bookshelf[word] = 1
 			self.count += 1
-			
+
+			# How often to update? Framerate will depend on the number of relevant 
+			# tweets, so one size does not necessarily fit all			
 			it = 5
 			
 			# Move forward
 			if self.count % it == 0:
 				sorted_words = sorted(self.bookshelf.items(), key=operator.itemgetter(1), reverse=True)
 				
+				clear()
 				print('=== Update ==='.format(self.count))
 				
 				for i in range(0,20):
 					print('{}): {} [{}]'.format(str(i+1),sorted_words[i][0],sorted_words[i][1]))
 
-				
 
 	def on_error(self, status_code, data):
 		print(status_code)
 		self.disconnect()
-
 
 
 key = 'cok4sOTC7tX3J5ughI3rFpbSx'
@@ -55,7 +69,7 @@ authkey = '1217553746-TuFJgNC79p2uoAPlstnqkM9HoTOb7NsEkVmIGYx'
 authsecret = 'X7jB10iBsgQrnTN9O1T8k7R7Ii8ZdNGAnMRAil3XU8CUS'
 
 '''
-The problem of lemmatization is often attacked algorithically.
+The problem of lemmatization is often attacked algorithmically.
 
 I personally think this is a mistake in syntatic processing (not
 natural language processing). There aren't that many words, and
@@ -87,11 +101,26 @@ The file e_lemma.txt courtesy of:
 	http://lexically.net/downloads/BNC_wordlists/e_lemma.txt
 '''
 
-#with open('e_lemma.txt','r'):
+
+class YasumasaStemmer():
+	'''
+	Keep in mind how fickle this can be:
+	When covering the 2016 election, sander -> sanders. . .
+	'''
+	def __init__(self):
+		self.stems = {}
+		with open('e_lemma.txt','r') as stems:
+			for line in stems:
+				line = line.replace('\n','')
+				parsed = line.split(' -> ')
+				alts = parsed[1].split(',')
+				for a in alts:
+					self.stems[a] = parsed[0]
+
+
 
 stream = MyStreamer(key,secret,authkey,authsecret)
 stream.staging()
 keyword = 'trump'
 stream.stop_words.append(keyword)
 stream.statuses.filter(track=keyword)
-
