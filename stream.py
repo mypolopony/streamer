@@ -1,7 +1,9 @@
 import os
 import re
 import operator
+import sys, getopt
 from twython import TwythonStreamer
+from textblob import TextBlob
 from nltk.stem.lancaster import LancasterStemmer # I really don't like this stemmer but it's standard
 
 ## As always, wayward home for lost but global variables (and functions!)
@@ -22,6 +24,28 @@ class MyStreamer(TwythonStreamer):
 		# Digest
 		if 'text' in data:
 			line = data['text']
+			
+			# Do n-grams
+			blob = TextBlob(line)
+			ngrams = list(blob.ngrams(n=2))
+			for ng in ngrams:
+				for word in list(ng):
+						word = word.lower()
+						if word in self.stemmer.stems.keys():
+								word = self.stemmer.stems[word]
+						match = re.search('\w+',word)
+						if match:
+								word = match.group()
+						if word in self.stop_words:
+								word = ''
+				if ng[0] and ng[1]:
+						if ' '.join(ng) in self.bookshelf.keys():
+								self.bookshelf[' '.join(ng)] += 1
+						else:
+								self.bookshelf[' '.join(ng)] = 1
+
+			'''
+			# Do Unigrams
 			for word in line.split(' '):
 				word = word.lower()
 
@@ -40,6 +64,8 @@ class MyStreamer(TwythonStreamer):
 						self.bookshelf[word] += 1
 					else:
 						self.bookshelf[word] = 1
+			'''
+
 			self.count += 1
 
 			# How often to update? Framerate will depend on the number of relevant 
@@ -118,9 +144,14 @@ class YasumasaStemmer():
 					self.stems[a] = parsed[0]
 
 
+def main(argv):
+        print(argv[0:])
+        stream = MyStreamer(key,secret,authkey,authsecret)
+        stream.staging()
 
-stream = MyStreamer(key,secret,authkey,authsecret)
-stream.staging()
-keyword = 'trump'
-stream.stop_words.append(keyword)
-stream.statuses.filter(track=keyword)
+        keyword = argv[0:]
+        stream.stop_words.append(keyword)
+        stream.statuses.filter(track=keyword)
+
+if __name__ == '__main__':
+        main(sys.argv[1:])
