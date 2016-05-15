@@ -4,7 +4,7 @@ A simple example of how to monitor a twitter stream and pick out progressively i
 
 It's not hard at all, and it can be interesting with the filter.  
 
-## Twitter Sentiment Analusis
+## Twitter Sentiment Analysis
 - remember to download nltk's vader_lexicon
 - using development version (3/2/16) due to issues with vader
 

@@ -1,0 +1,7 @@
+{
+	"settings": {
+        "xdebug": {
+             "url": "http://localhost:8000/",
+        }
+    }
+}
