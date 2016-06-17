@@ -6,6 +6,9 @@ from twython import TwythonStreamer
 from textblob import TextBlob
 from nltk.stem.lancaster import LancasterStemmer # I really don't like this stemmer but it's standard
 
+# For security
+import credentials
+
 ## As always, wayward home for lost but global variables (and functions!)
 clear = lambda: os.system('clear')
 st = LancasterStemmer()	# Not using this currently
@@ -88,12 +91,6 @@ class MyStreamer(TwythonStreamer):
 		self.disconnect()
 
 
-key = 'cok4sOTC7tX3J5ughI3rFpbSx'
-secret = 'QSia5RKFdloXDi6DUq2MwnpGP49eSTCtySvljIJqYh4fLS0vmj'
-
-authkey = '1217553746-TuFJgNC79p2uoAPlstnqkM9HoTOb7NsEkVmIGYx'
-authsecret = 'X7jB10iBsgQrnTN9O1T8k7R7Ii8ZdNGAnMRAil3XU8CUS'
-
 '''
 The problem of lemmatization is often attacked algorithmically.
 
@@ -146,7 +143,7 @@ class YasumasaStemmer():
 
 def main(argv):
         print(argv[0:])
-        stream = MyStreamer(key,secret,authkey,authsecret)
+        stream = MyStreamer(credentials.key,credentials.secret,credentials.authkey,credentials.authsecret)
         stream.staging()
 
         keyword = argv[0:]
