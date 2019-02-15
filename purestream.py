@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd
-# @Last Modified time: 2019-02-15 13:36:39
+# @Last Modified time: 2019-02-15 13:38:40
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -27,7 +27,7 @@ class StdOutListener(StreamListener):
             pass
 
     def on_error(self, status_code):
-        print('Error: {}'.format(status_code)) % status_code
+        print('Error: {}'.format(status_code))
         return True
 
     def on_timeout(self):
