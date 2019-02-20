@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd
-# @Last Modified time: 2019-02-19 20:22:55
+# @Last Modified time: 2019-02-20 00:07:06
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -13,6 +13,8 @@ import credentials          # Non-gitted credentials
 
 # Destination directory
 dest_dir = 'library'
+if not os.path.exists(dest_dir):
+    os.makedirs(dest_dir)
 
 # This is a basic listener received relevant tweets
 # We extend it to take the output file
