@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd
-# @Last Modified time: 2019-02-15 13:38:40
+# @Last Modified time: 2019-02-19 16:32:45
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -46,7 +46,7 @@ def main(targets):
 
 if __name__ in ('__console__', '__main__'):
     # Take arguments as targets
-    targets = sys.argv[1:].split()
+    targets = sys.argv[1:]
 
     if not targets:
         print('Use a space separated set of arguments to specify targets')
