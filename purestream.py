@@ -2,35 +2,70 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd
-# @Last Modified time: 2019-02-19 16:32:45
+# @Last Modified time: 2019-02-19 20:22:55
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+import os
 import sys
-from textwrap import TextWrapper
+import credentials          # Non-gitted credentials
 
-# Personal credentials
-import credentials
+# Destination directory
+dest_dir = 'library'
 
-#This is a basic listener received relevant tweets
+# This is a basic listener received relevant tweets
+# We extend it to take the output file
 class StdOutListener(StreamListener):
 
+    def __init__(self, targets):
+        # This is the fun 'super' call required when overriding __init__
+        super(StdOutListener, self).__init__()
+
+        # Register targets and distination file
+        self.targets = targets             # Not used class-wide, but useful
+        self.outname = '_'.join(targets)   # Also not used class-wide but useful
+
+        # I hate this construction because it opens a file without explicitly
+        # closing it. Python does in fact do a good job with closing opened 
+        # I/O things, and garbage collection, and all that, but it always seems
+        # uneasy to me. . .
+        self.outfile = open(os.path.join(dest_dir, self.outname), 'a')
+
     def on_status(self, status):
+        '''
+        A message has been received
+        '''
         try:
             if 'RT' not in status.text:     # Don't duplicate
+                # Write to the appropriate file
+                #
+                # This is actuall a lot of opening and closing; the alternative
+                # would be to open the files during initialization, then refer
+                # to them that way.
                 cleantext = status.text.replace('\n','')
-                print('{}\t{}\t{}\t{}'.format(status.author.screen_name, status.created_at, status.source, cleantext))
-        except:
+                self.outfile.write('{}\t{}\t{}\t{}\n'.format(
+                        status.author.screen_name,
+                        status.created_at,
+                        status.source, 
+                        cleantext))
+        except Exception as e:
             # Catch any unicode errors while printing to console
-            # and just ignore them to avoid breaking application.
+            # and just ignore them: quantity > quality in this case
+            print(e)
             pass
 
     def on_error(self, status_code):
+        '''
+        An error has occured
+        '''
         print('Error: {}'.format(status_code))
         return True
 
     def on_timeout(self):
+        '''
+        Timeout, likely loss of connection
+        '''
         print('Timeout reached')
 
 
@@ -39,8 +74,8 @@ def main(targets):
     auth = OAuthHandler(credentials.key, credentials.secret)
     auth.set_access_token(credentials.authkey, credentials.authsecret)
 
-    # The strean
-    stream = Stream(auth, StdOutListener())
+    # The stream
+    stream = Stream(auth, StdOutListener(targets))
     stream.filter(None, targets)
 
 
@@ -48,6 +83,7 @@ if __name__ in ('__console__', '__main__'):
     # Take arguments as targets
     targets = sys.argv[1:]
 
+    # Ensure validity
     if not targets:
         print('Use a space separated set of arguments to specify targets')
     else:
