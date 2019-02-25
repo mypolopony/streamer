@@ -6,6 +6,10 @@ Will monitor recent tweets and identify the top N most recent tuples. This is us
 
 A very simple filter implementation to to monitor the twitter stream at-large for an arbitrary number of targets. This is particularly useful for monitoring rapidly fluid situations, i.e. mass casualties, sports events, award shows, etc. . .
 
+#### Purepost
+
+Uses a simple MongoDB database to queue posts. Sometimes, you come up with too many ideas, but you'd like to throttle them. There is an `add` functionality to add posts to the queue, and a `run` capability to periodically emit those messages to Twitter.
+
 
 #### TODO:
 - The list of stop-words is decent but should be adapted to the Twitterspace
