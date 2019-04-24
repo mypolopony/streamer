@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd
-# @Last Modified time: 2019-02-20 00:07:06
+# @Last Modified time: 2019-03-25 12:20:14
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -42,10 +42,10 @@ class StdOutListener(StreamListener):
             if 'RT' not in status.text:     # Don't duplicate
                 # Write to the appropriate file
                 #
-                # This is actuall a lot of opening and closing; the alternative
+                # This is actually a lot of opening and closing; the alternative
                 # would be to open the files during initialization, then refer
                 # to them that way.
-                cleantext = status.text.replace('\n','')
+                cleantext = status.text.replace('\n','').lower()
                 self.outfile.write('{}\t{}\t{}\t{}\n'.format(
                         status.author.screen_name,
                         status.created_at,
