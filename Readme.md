@@ -32,7 +32,7 @@ Actually, there may be many missing: I thought that I had gone through screensho
 
 #### Updates:
 
-Attempting enshrine posts in dabase or text, and given the above, comitting the source(s) to version control.
+Attempting to enshrine posts in dabase or text, and given the above, comitting the source(s) to version control.
 
 
 #### TODO:
