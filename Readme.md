@@ -12,11 +12,9 @@ Uses a simple MongoDB database to queue posts. Sometimes, you come up with too m
 
 #### An incident occurred
 
-# A file, TWEETME, 600 intended tweets cultivated over about 10 months were overwritten by this drivel\
+#### A file, TWEETME, 600 intended tweets cultivated over about 10 months were overwritten by this drivel
 
-# RIP TWEETME
-
-# -------
+### -------
 
 Woah, my buddy Spammer Riskaay! I haven't heard from this dude in a minute.
 
@@ -28,11 +26,7 @@ Who knew endless texts and phone calls, somewhere between awkard and threatening
 
 Ground roots af.
 
-# -------
-
-thxobama 
-
-# -------
+### -------
 
 I actjually thought i went through screenshots to find the rare capture of the text file from before but either that was a dream or I've entirely forgotten where it is. . . 
 
