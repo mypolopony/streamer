@@ -12,7 +12,7 @@ Uses a simple MongoDB database to queue posts. Sometimes, you come up with too m
 
 #### An incident occurred
 
-#### A file, TWEETME, 600 intended tweets cultivated over about 10 months were overwritten by this drivel
+A file, TWEETME, 600 intended tweets cultivated over about 10 months were overwritten by this drivel
 
 ### -------
 
