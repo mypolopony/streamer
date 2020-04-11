@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   mypolopony
-# @Last Modified time: 2020-02-05 20:18:41
+# @Last Modified time: 2020-03-21 11:30:31
 
 '''
 I often find turns of phrase that I think are pithy enough to etch 
@@ -70,6 +70,21 @@ def console_input():
 # Main things
 if __name__ in ('__console__', '__main__'):
     pprint('Tervetuloa! Welcome!')
+
+    '''
+    Unfortunately, or fortunately, there are a number of sources based 
+    on the constant evolution of this project. They are:
+
+        1. Most recent (i.e. RAM) text file of intended posts
+            [currently TWEETMEAGAIN]
+        2. Old raw text files of intended posts
+            [e.g. TWEETME]
+        3. Partial restorations of thousands of copy-paste history, captured
+           by CopyClip, across two different versions, because I accidentally
+           overwrote the above RAM and previous-RAM
+            [these are exports from the raw CopyClip sqlite database;
+                /db1 and /db2], yielding jsons according to 
+
 
     # Populate queue using file (insensitive to redundancy)
     pprint('Checking TWEETME file for new entries')

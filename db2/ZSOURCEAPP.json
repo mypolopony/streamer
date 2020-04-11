@@ -1,0 +1,137 @@
+[
+    {
+        "ZBUNDLE": "com.google.Chrome",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Google Chrome",
+        "Z_ENT": 2,
+        "Z_OPT": 459,
+        "Z_PK": 1
+    },
+    {
+        "ZBUNDLE": "com.googlecode.iterm2",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "iTerm2",
+        "Z_ENT": 2,
+        "Z_OPT": 99,
+        "Z_PK": 2
+    },
+    {
+        "ZBUNDLE": "com.sublimetext.3",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Sublime Text",
+        "Z_ENT": 2,
+        "Z_OPT": 148,
+        "Z_PK": 3
+    },
+    {
+        "ZBUNDLE": "com.hnc.Discord",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Discord",
+        "Z_ENT": 2,
+        "Z_OPT": 6,
+        "Z_PK": 4
+    },
+    {
+        "ZBUNDLE": null,
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "java",
+        "Z_ENT": 2,
+        "Z_OPT": 59,
+        "Z_PK": 5
+    },
+    {
+        "ZBUNDLE": "me.rsms.fbmessenger",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Messenger",
+        "Z_ENT": 2,
+        "Z_OPT": 29,
+        "Z_PK": 6
+    },
+    {
+        "ZBUNDLE": "com.spotify.client",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Spotify",
+        "Z_ENT": 2,
+        "Z_OPT": 2,
+        "Z_PK": 7
+    },
+    {
+        "ZBUNDLE": "com.apple.finder",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Finder",
+        "Z_ENT": 2,
+        "Z_OPT": 4,
+        "Z_PK": 8
+    },
+    {
+        "ZBUNDLE": "com.apple.Notes",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Notes",
+        "Z_ENT": 2,
+        "Z_OPT": 2,
+        "Z_PK": 9
+    },
+    {
+        "ZBUNDLE": "com.apple.Preview",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Preview",
+        "Z_ENT": 2,
+        "Z_OPT": 2,
+        "Z_PK": 10
+    },
+    {
+        "ZBUNDLE": "com.apple.iChat",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Messages",
+        "Z_ENT": 2,
+        "Z_OPT": 8,
+        "Z_PK": 11
+    },
+    {
+        "ZBUNDLE": "com.bittorrent.uTorrent",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "µTorrent",
+        "Z_ENT": 2,
+        "Z_OPT": 1,
+        "Z_PK": 12
+    },
+    {
+        "ZBUNDLE": "com.apple.TextEdit",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "TextEdit",
+        "Z_ENT": 2,
+        "Z_OPT": 5,
+        "Z_PK": 13
+    },
+    {
+        "ZBUNDLE": "com.apple.AddressBook",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "Contacts",
+        "Z_ENT": 2,
+        "Z_OPT": 2,
+        "Z_PK": 14
+    },
+    {
+        "ZBUNDLE": "com.apple.systempreferences",
+        "ZICON": null,
+        "ZISBLACKLISTED": 0,
+        "ZNAME": "System Preferences",
+        "Z_ENT": 2,
+        "Z_OPT": 1,
+        "Z_PK": 15
+    }
+]
