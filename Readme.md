@@ -24,11 +24,11 @@ But not *that* much.
 
 Who knew endless texts and phone calls, somewhere between awkard and threatening, could be yours for just a small payment of $7.
 
-Ground roots af.
+__Ground roots af.__ ?
 
 ### -------
 
-I actjually thought i went through screenshots to find the rare capture of the text file from before but either that was a dream or I've entirely forgotten where it is. . . 
+I actually thought that I had previously gone through screenshots to find the rare capture of the text file of the list of brilliant ideas but either that was a dream or I've entirely forgotten where it is. . . 
 
 #### Updates:
 
