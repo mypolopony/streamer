@@ -28,7 +28,7 @@ __Ground roots af.__ ?
 
 ### -------
 
-I actually thought that I had previously gone through screenshots to find the rare capture of the text file of the list of brilliant ideas but either that was a dream or I've entirely forgotten where it is. . . 
+Actually, there may be many missing: I thought that I had gone through screenshots to find the rare captures of the text file, an off-hand glimpse of the brilliant ideas previously noted, but either that was a dream or I've entirely forgotten where it is. . . 
 
 #### Updates:
 
