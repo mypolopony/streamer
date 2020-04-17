@@ -2,12 +2,12 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-04-17 01:56:57
+# @Last Modified time: 2020-04-17 01:58:18
 
 '''
 I often find turns of phrase that I think are pithy enough to etch 
-them into the twitter machine. While consuming media, it is easy
-to record these / copy and paste in a flat file, which I generally
+into the twitter machine. While consuming media, it is easy to
+record these / copy and paste in a flat file, which I generally
 always have open.
 
 Wanting to post these brilliant finds, I use the Tweepy API to 
