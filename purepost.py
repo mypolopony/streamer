@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-04-17 01:58:18
+# @Last Modified time: 2020-04-17 01:59:22
 
 '''
 I often find turns of phrase that I think are pithy enough to etch 
@@ -10,8 +10,8 @@ into the twitter machine. While consuming media, it is easy to
 record these / copy and paste in a flat file, which I generally
 always have open.
 
-Wanting to post these brilliant finds, I use the Tweepy API to 
-post them automatically at a reasonable pace,   
+Wanting to ------- these brilliant finds, I use the Tweepy API to 
+post them automatically at a reasonable pace
 '''
 
 import os
