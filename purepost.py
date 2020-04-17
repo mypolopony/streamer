@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-04-17 02:07:42
+# @Last Modified time: 2020-04-17 02:09:39
 
 '''
 I often find turns of phrase that I think are pithy enough to etch 
@@ -37,6 +37,9 @@ def pprint(msg):
     order to distinguish it as unique but that's not terribly 
     helpful, so we'll just override pprint, even though we never 
     really imported it. . . 
+
+    The correct answer is that a personal style package would be
+    well to do here for these trivial things 
     '''
     print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
 
