@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-04-14 19:31:16
+# @Last Modified time: 2020-04-17 01:56:57
 
 '''
 I often find turns of phrase that I think are pithy enough to etch 
@@ -114,21 +114,64 @@ if __name__ in ('__console__', '__main__'):
     pprint('Tervetuloa! Welcome!')
 
     while True:
-        # Check for anything new and resolve the database
+        # Check for anything new and resolve / add to the database
         update_archives()
 
-        post = db.queue.find_one({'posted': False})
-        if post:
-            # Announce
-            pprint('There\'s a new post!: {}'.format(post['text']))
+        posts = db.queue.find({'posted': False})
 
-            # Post
+        # Announce
+        pprint('There are {} unposted posts.'.format(posts.count()))
+
+        if posts:
+            '''
+            Aha, there's something to do. A few options. Consider first
+            that there should be no more than a few dozen valid, postable
+            entries. So a method you would use for 20 million entries is 
+            very different from one with 20.
+
+            We just one one. A random one, because not only does order not
+            matter, it's actually adventageous to shuffle the entries
+        
+            We've already determined that there is at least one unposted
+            item, which is a nice signal. Unfortunately, we had to do a 
+            broad query to determine that. It's okay, these things are pretty
+            cheap, but in a larger system, you would either have to create
+            an index on the 'posted' field, or set some other flag to 
+            ensure that new items notify the overall system that there is a new
+            item.
+
+            I'm pretty sure db.queue.find() is at worst O(N) and at best O(1). If 
+            you want to do db.queue.find()[0] that's definitely O(N). But that's
+            a waste because we only want one for the moment.
+
+            So requery with find_one seems okay but I'm not sure it's random. It
+            actually might very well be. . .
+
+            But there is another option which I think is assured to be random:
+
+                db.queue.aggregate([{ $sample: { size: 1 } }])
+
+
+            Now, I don't actually know the mechanism behind this query, and the 
+            'aggregate' makes me feel like it is in fact loading all of the items
+            and then just. . . picking one. Which is not what we want. But, at 
+            this point, let's just assume the MongoDB people know what they're doing.
+
+            Maybe we should have used this call initially, but again it's cost / benefit. 
+            At this point, I'm not sure we can avoid gathering the entire set at some point, 
+            and it's so very not important for this use case and basically just academic.
+            '''
+
+            # Less than ideal because it's not obvious that there will be one, although we
+            # know there well be, but as such there is no error checking
+            post = db.queue.aggregate([{ $sample: { size: 1 } }])
+
+            print('Posting new: {}'.format(post['text']))
             api.update_status(post['text'])
 
             # Mark as posted
             db.queue.update_one({'_id': post['_id']}, {'$set': {'posted': True}})
-            pprint('Posted: {}'.format(post['text']))
-            
+            pprint('Successful')
 
         # Wait for two hours +/- 60 minutes-ish, as if it weren't a bot
         seconds = 2 * 60 * 60 + 60 * random.randint(0, 60)
