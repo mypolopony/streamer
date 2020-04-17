@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-04-17 01:59:22
+# @Last Modified time: 2020-04-17 02:07:42
 
 '''
 I often find turns of phrase that I think are pithy enough to etch 
@@ -25,7 +25,18 @@ from tweepy import OAuthHandler, API
 
 def pprint(msg):
     '''
-    Our own special pretty-print, because why not?
+    Our own special pretty-print, because why not? 
+
+    We could actually bind print to pprint here, but there is
+    an awkward name collision, given pprint is common but not 
+    imported here as usual. And it would be nice just to 
+    seamlessly obscure the actual mechanics of 'print' but it's 
+    not terribly elegant. 
+
+    Rigorously, this might be called hello_i_am_a_stupid_print() in
+    order to distinguish it as unique but that's not terribly 
+    helpful, so we'll just override pprint, even though we never 
+    really imported it. . . 
     '''
     print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
 
