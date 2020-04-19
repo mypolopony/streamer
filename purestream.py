@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
-# @Last Modified by:   Selwyn-Lloyd
-# @Last Modified time: 2019-03-25 12:20:14
+# @Last Modified by:   Selwyn-Lloyd McPherson
+# @Last Modified time: 2020-04-18 22:57:20
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -59,8 +59,15 @@ class StdOutListener(StreamListener):
 
     def on_error(self, status_code):
         '''
-        An error has occured
-        '''
+		Here is a fun thing to notice:
+
+		If you try to run the streamer in two processes, you might get killed with a 420 error.
+
+		This occurred because I was not certain about capitalization, and tried two 
+		separate instantiations to compare the difference. Unfortunately, that overloaded
+		the API and I was (likely temporarily) shut out. Makes sense!
+		'''
+		
         print('Error: {}'.format(status_code))
         return True
 
