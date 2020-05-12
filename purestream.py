@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
-# @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-04-18 22:57:20
+# @Last Modified by:   mypolopony
+# @Last Modified time: 2020-05-11 03:42:57
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
