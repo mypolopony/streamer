@@ -1,15 +1,21 @@
 #### Streamer
 
-Will monitor recent tweets and identify the top N most recent tuples. This is useful for identifying trending topics.
+This Streamer is unfortunately named because it refers to several very different functions interacting with the Twitter API.
 
-#### Purestream
+# 1) Monitor recent tweets and identify the top N most recent tuples. This is useful for identifying trending topics.
 
-A very simple filter implementation to to monitor the twitter stream at-large for an arbitrary number of targets. This is particularly useful for monitoring rapidly fluid situations, i.e. mass casualties, sports events, award shows, etc. . .
 
-#### Purepost
+# 2) A very simple filter implementation to to monitor the twitter stream at-large for an arbitrary number of targets. This is useful for monitoring rapidly fluid situations, i.e. mass casualties, sports events, award shows, by keyword(s)
 
-Uses a simple MongoDB database to queue posts. Sometimes, you come up with too many ideas, but you'd like to throttle them. There is an `add` functionality to add posts to the queue, and a `run` capability to periodically emit those messages to Twitter.
 
+# 3) A personal Twitter account manager which sanitizes previosu posts, queues future posts and maintains a local database of tweets
+
+
+---- 
+
+__Irrelevant history__:
+
+```
 #### An incident occurred
 
 A file, TWEETME, 600 intended tweets cultivated over about 10 months were overwritten by this drivel
@@ -33,13 +39,4 @@ Actually, there may be many missing: I thought that I had gone through screensho
 #### Updates:
 
 Attempting to enshrine posts in dabase or text, and given the above, comitting the source(s) to version control.
-
-
-#### TODO:
-- The list of stop-words is decent but should be adapted to the Twitterspace
-
-- I would prefer a moving window, which would be much more representative of current events without giving too much due to historical events
-
-- It would be easy to have a keypress to refresh the history
-
-- Make it prettier!
+```
