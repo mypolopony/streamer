@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-05-10 07:11:27
+# @Last Modified time: 2020-06-17 12:13:14
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -21,6 +21,8 @@ import random
 import datetime
 import credentials          # Non-gitted credentials
 from pymongo import MongoClient
+from tinydb import TinyDB, Query
+from tinymongo import TinyMongoClient
 from tweepy import OAuthHandler, API
 
 
@@ -30,11 +32,6 @@ def pprint(msg):
     '''
     print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
 
-
-# Database connection
-c = MongoClient()
-db = c['streamer']
-pprint('Database connection successful')
 
 # Twitter authentication
 auth = OAuthHandler(credentials.key, credentials.secret)
@@ -69,45 +66,47 @@ def console_input():
 
         sys.exit(0)
 
+def load_extant(tweetdb)
+    '''
+    Extant tweets are retrieved from manual download of account history from 
+    Twitter. Unfortunately, the format needs to be pre-processed since Twitter
+    produces invalid JSON. As long as this project remains in tact, it only needs
+    to be done once, and it's not hard. This file is produced after that 
+    transformation (it's just key-ifying the outer structure)
+    '''
+
+    with open('extant_jun_17_2020.json','r') as extant_in:
+        extant = json.load(extant_in)
+    extant = [e['tweet']['full_text'] for e in extant]
+
+    # 3525 tweets wow that's a lot. Confirmed by visiting Twitter, yikes. [June 17 2020]
+    pprint('Found {} Existing Posts'.format(len(extant)))
+
+    db = TinyDB(tweetdb)
+
+    for tweet in extant:
+        db.insert_one({'text': tweet, 'posted': True})
+
+    return
+
 
 # Main things
 if __name__ in ('__console__', '__main__'):
     pprint('Tervetuloa! Welcome!')
-    pprint('Checking sources')
 
-    sources = ['TWEETMEAGAIN', ]
-
-    '''
-    Unfortunately, or fortunately, there are a number of sources based
-    on the constant evolution of this project. They are:
-
-        1. Most recent (i.e. RAM) text file of intended posts
-            [currently TWEETMEAGAIN]
-        2. Old raw text files of intended posts
-            [e.g. TWEETME]
-        3. Partial restorations of thousands of copy-paste history, captured
-           by CopyClip, across two different versions, because I accidentally
-           overwrote the above RAM and previous-RAM
-            [these are exports from the raw CopyClip sqlite database;
-                /db1 and /db2]
-    '''
-
-    # Populate queue using file (insensitive to redundancy)
-    for source in sources:
-        pprint('Checking {} file for new entries'.format(source))
-        try:
-            with open(source, 'r') as filequeue:
-                for line in filequeue:
-                    if not db.queue.find_one({'text': line}):
-                        db.queue.insert_one({'text': line, 'posted': False})
-                        pprint('Inserted {}'.format(line))
-        except:
-            # I think there may be a situation in which there is no file
-            pass
-
-    pprint('Total unposted sources: {}'.format(
-        db.queue.find({'posted': False}).count()))
-
+    # Using tinydb here, as it is perfect for these small projects. It's NoSQL
+    # because I really hate SQL. I think it jus uses JSON for storage. . .
+    tweetdb = 'tweetdb.json'
+    
+    # Initiate (this only needs to be done once). Unfortunately, we can't just initiate
+    # the database blindly, or it will create an empty one
+    if not os.path.exists(tweetdb):
+        load_extant(tweetdb)
+    
+    # Unfortunately, 
+    # db = TinyDB(tweetdb)
+    # pprint('Database connection successful')
+    
     '''
     # Post loop
     while True:
