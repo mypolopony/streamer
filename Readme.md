@@ -12,3 +12,5 @@ A very simple filter implementation to to monitor the twitter stream at-large fo
 
 ### Purepost
 This is the most significant module. It is a personal Twitter account manager which sanitizes previous posts, queues future posts and maintains a local database of tweets.
+
+I also use: `alias tweet='f(){ echo $1 >> ~/Projects/streamer/TWEETME }; f'`
