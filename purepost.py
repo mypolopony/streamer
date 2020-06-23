@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-06-17 12:13:14
+# @Last Modified time: 2020-06-19 19:07:50
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -17,12 +17,13 @@ post them automatically at a reasonable pace,
 import os
 import sys
 import time
+import json
 import random
+import argparse
 import datetime
 import credentials          # Non-gitted credentials
 from pymongo import MongoClient
 from tinydb import TinyDB, Query
-from tinymongo import TinyMongoClient
 from tweepy import OAuthHandler, API
 
 
@@ -42,11 +43,14 @@ pprint('Authenticated')
 api = API(auth)
 pprint('API connected')
 
-
 def console_input():
     '''
-    Add via command line (possible direct injection, but
-    not necessarily recommended)
+    # !!DEPRECATED!! 
+    via: alias tweet='f(){ echo $1 >> ~/Projects/streamer/TWEETME }; f'
+
+    # [not-yet] UN-DEPRECATED
+    via alias tweet='f(){
+        /usr/local/bin/python3 ~/Projects/streamer/purepost.py add'
     '''
 
     # Check arguments
@@ -66,32 +70,41 @@ def console_input():
 
         sys.exit(0)
 
-def load_extant(tweetdb)
+def load_extant(tweetdb):
     '''
     Extant tweets are retrieved from manual download of account history from 
     Twitter. Unfortunately, the format needs to be pre-processed since Twitter
     produces invalid JSON. As long as this project remains in tact, it only needs
     to be done once, and it's not hard. This file is produced after that 
     transformation (it's just key-ifying the outer structure)
+
+    This was actually excruciatingly slow, thanks tinydb :(
     '''
 
     with open('extant_jun_17_2020.json','r') as extant_in:
         extant = json.load(extant_in)
-    extant = [e['tweet']['full_text'] for e in extant]
+    extant = [e['tweet']['full_text'] for e in extant['data']]
 
     # 3525 tweets wow that's a lot. Confirmed by visiting Twitter, yikes. [June 17 2020]
     pprint('Found {} Existing Posts'.format(len(extant)))
 
-    db = TinyDB(tweetdb)
+    pprint('Creating Database')
+    try:
+        db = TinyDB(tweetdb)
 
-    for tweet in extant:
-        db.insert_one({'text': tweet, 'posted': True})
+        for tweet in extant:
+            db.insert({'text': tweet, 'posted': True})
+
+    except Exception as e:
+        pprint('Exception Encountered: {}'.format(e))
+        os.remove(tweetdb)
 
     return
 
 
 # Main things
 if __name__ in ('__console__', '__main__'):
+
     pprint('Tervetuloa! Welcome!')
 
     # Using tinydb here, as it is perfect for these small projects. It's NoSQL
@@ -103,14 +116,13 @@ if __name__ in ('__console__', '__main__'):
     if not os.path.exists(tweetdb):
         load_extant(tweetdb)
     
-    # Unfortunately, 
-    # db = TinyDB(tweetdb)
-    # pprint('Database connection successful')
+    db = TinyDB(tweetdb)
+    pprint('Database connection successful')
     
-    '''
     # Post loop
     while True:
-        post = db.queue.find_one({'posted': False})
+        Tweet = Query()
+        post = db.get(Tweet.posted == False)
         if post:
             pprint('There\'s a new')
             api.update_status(post['text'])
