@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-06-19 19:07:50
+# @Last Modified time: 2020-06-23 13:57:48
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -21,7 +21,7 @@ import json
 import random
 import argparse
 import datetime
-import credentials          # Non-gitted credentials
+import credentials                      # Non-gitted credentials
 from pymongo import MongoClient
 from tinydb import TinyDB, Query
 from tweepy import OAuthHandler, API
@@ -134,4 +134,3 @@ if __name__ in ('__console__', '__main__'):
         pprint('Next update in {} minutes'.format(int(seconds / 60)))
                 
         time.sleep(seconds)
-    '''
