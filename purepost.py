@@ -27,6 +27,12 @@ from tinydb import TinyDB, Query
 from tweepy import OAuthHandler, API
 
 
+def convert(seconds):
+    '''
+    Nicer time display
+    '''
+    return time.strftime("%H:%M:%S", time.gmtime(n))
+
 def pprint(msg):
     '''
     Our own special pretty-print
@@ -42,6 +48,16 @@ pprint('Authenticated')
 # Twitter / Tweepy API
 api = API(auth)
 pprint('API connected')
+
+# Location of local tweet database
+tweetdb = 'tweetdb.json'
+
+def open_db():
+    # Local tweet database
+    db = TinyDB(tweetdb)
+    tweets = TinyDB.table(db, 'tweets')
+
+    return tweets
 
 def console_input():
     '''
@@ -70,7 +86,7 @@ def console_input():
 
         sys.exit(0)
 
-def load_extant(tweetdb):
+def load_extant():
     '''
     Extant tweets are retrieved from manual download of account history from 
     Twitter. Unfortunately, the format needs to be pre-processed since Twitter
@@ -81,6 +97,9 @@ def load_extant(tweetdb):
     This was actually excruciatingly slow, thanks tinydb :(
     '''
 
+    # Tweet database
+    tweets = open_db()
+
     with open('extant_jun_17_2020.json','r') as extant_in:
         extant = json.load(extant_in)
     extant = [e['tweet']['full_text'] for e in extant['data']]
@@ -88,12 +107,10 @@ def load_extant(tweetdb):
     # 3525 tweets wow that's a lot. Confirmed by visiting Twitter, yikes. [June 17 2020]
     pprint('Found {} Existing Posts'.format(len(extant)))
 
-    pprint('Creating Database')
+    pprint('Creating Database / Table')
     try:
-        db = TinyDB(tweetdb)
-
         for tweet in extant:
-            db.insert({'text': tweet, 'posted': True})
+            tweets.insert({'text': tweet, 'posted': True})
 
     except Exception as e:
         pprint('Exception Encountered: {}'.format(e))
@@ -109,28 +126,35 @@ if __name__ in ('__console__', '__main__'):
 
     # Using tinydb here, as it is perfect for these small projects. It's NoSQL
     # because I really hate SQL. I think it jus uses JSON for storage. . .
-    tweetdb = 'tweetdb.json'
-    
-    # Initiate (this only needs to be done once). Unfortunately, we can't just initiate
-    # the database blindly, or it will create an empty one
+
+    '''
+    # ONE TIMER-ISH
+    # Initiate (this only needs to be done once). This will also load the extant
+    # tweets
     if not os.path.exists(tweetdb):
-        load_extant(tweetdb)
-    
-    db = TinyDB(tweetdb)
-    pprint('Database connection successful')
+        load_extant()
+
+    # DO THIS OCCASIONALLY, manually add to TWEETME and then delete
+    # Load those in the TWEETME queue
+    if os.path.exists('TWEETME'):
+        tweets = open_db()
+    with open('TWEETME', 'r') as newtweets:
+        for idx, line in enumerate(newtweets):
+            tweets.insert({'text': line.replace('\n',''), 'posted': False})
+    '''
     
     # Post loop
     while True:
         Tweet = Query()
-        post = db.get(Tweet.posted == False)
-        if post:
-            pprint('There\'s a new')
-            api.update_status(post['text'])
-            pprint('Posted: {}'.format(post['text']))
-            db.queue.update_one({'_id': post['_id']}, {'$set': {'posted': True}})
+        post = tweets.get(Tweet.posted == False)
 
-        # Wait for two hours +/- 60 minutes, as if it weren't a bot
-        seconds = 2 * 60 * 60 + 60 * random.randint(0, 60)
-        pprint('Next update in {} minutes'.format(int(seconds / 60)))
+        if post:
+            _ = api.update_status(post['text'])
+            pprint('Post Successful: {}'.format(post['text']))
+            tweets.update({'posted':True}, doc_ids = [post.doc_id])
+
+        # Wait 6 - 12 hours
+        seconds = random.uniform(6,12) * 60 * 60
+        pprint('Next update in {} hours'.format(round(seconds/60/60, 1)))
                 
         time.sleep(seconds)
