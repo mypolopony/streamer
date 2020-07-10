@@ -142,9 +142,17 @@ if __name__ in ('__console__', '__main__'):
         for idx, line in enumerate(newtweets):
             tweets.insert({'text': line.replace('\n',''), 'posted': False})
     '''
+
+    # Tweets database
+    tweets = open_db() 
     
     # Post loop
     while True:
+        # Have to re-establish connection (it times out, which is less than ideal since
+        # this will potentially run forever. . . -- we would ideally like to see if it's 
+        # still open but. . . this is TinyDB for a reason. . .
+        tweets = open_db()
+
         Tweet = Query()
         post = tweets.get(Tweet.posted == False)
 
@@ -153,8 +161,8 @@ if __name__ in ('__console__', '__main__'):
             pprint('Post Successful: {}'.format(post['text']))
             tweets.update({'posted':True}, doc_ids = [post.doc_id])
 
-        # Wait 6 - 12 hours
-        seconds = random.uniform(6,12) * 60 * 60
-        pprint('Next update in {} hours'.format(round(seconds/60/60, 1)))
+        # Wait 3 - 6 hours
+        seconds = random.uniform(3, 6) * 60 * 60
+        pprint('Next update in {} seconds ({} hours)'.format(seconds, round(seconds/60/60, 1)))
                 
         time.sleep(seconds)
