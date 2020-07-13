@@ -131,12 +131,20 @@ if __name__ in ('__console__', '__main__'):
         load_extant()
     '''
 
-    # 
-    if os.path.exists('TWEETME'):
-        tweets = open_db()
-    with open('TWEETME', 'r') as newtweets:
-        for idx, line in enumerate(newtweets):
-            tweets.insert({'text': line.replace('\n',''), 'posted': False})
+    # The queue, TWEETME, is just a flat file of current brilliant musings. It is of
+    # some satisfaction to amass a respectable list before sending it to the *actual*
+    # database queue, and a flat file one Command+Tab away is comforting to me. Nevertheless,
+    # these (pre-)queues posts have to be scooped up at some point. Let's just have
+    # the user decide whether she wants to do it now or defer.
+    prequeue = ' TWEETME'
+    if os.path.exists(prequeue):
+        if input('TWEETME File Found. Send to DB? ('y' for yes): ') == 'y':
+            tweets = open_db()
+            with open(prequeue, 'r') as newtweets:
+                for idx, line in enumerate(newtweets):
+                    tweets.insert({'text': line.replace('\n',''), 'posted': False})
+            print('{} tweets sent to local database'.format(idx))
+            os.remove(prequeue)
 
     # Tweets database
     tweets = open_db() 
