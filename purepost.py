@@ -107,7 +107,7 @@ def time_analysis():
         # Are they the same? Dict comparison!
         assert(re_result == parse_result)
 
-    except:
+    except AssertionError:
         print('Sorry, your parser is broken [this shouldn\'t happen]')
 
 
@@ -128,7 +128,7 @@ def time_analysis():
         # What's the differene? Clearly nothing
         assert(dt_dateparser = dt_dateutil = dt_datetime)
     
-    except:
+    except AssertionError:
         print('Sorry, your date-time interpreter is broken [this shouldn\'t happen]')
 
 
