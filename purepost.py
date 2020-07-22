@@ -126,7 +126,7 @@ def time_analysis():
         dt_datetime = datetime.strptime('2015-01-01 01:00:00', '%Y-%m-%d %H:%M:%S')
 
         # What's the differene? Clearly nothing
-        assert(dt_dateparser = dt_dateutil = dt_datetime)
+        assert(dt_dateparser == dt_dateutil == dt_datetime)
     
     except AssertionError:
         print('Sorry, your date-time interpreter is broken [this shouldn\'t happen]')
@@ -220,6 +220,7 @@ if __name__ in ('__console__', '__main__'):
             tweets = open_db()
             with open(prequeue, 'r') as newtweets:
                 for idx, line in enumerate(newtweets):
+                    print((idx, line))
                     tweets.insert({'text': line.replace('\n',''), 'posted': False})
             print('{} tweets sent to local database'.format(idx))
             os.remove(prequeue)
@@ -239,7 +240,9 @@ if __name__ in ('__console__', '__main__'):
 
         if post:
             _ = api.update_status(post['text'])
+            pprint('Post Successful: {}'.format(post['text']))
             tweets.update({'posted':True}, doc_ids = [post.doc_id])
+
 
         # Wait 3 - 6 hours
         seconds = random.uniform(3, 6) * 60 * 60
