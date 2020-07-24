@@ -220,9 +220,11 @@ if __name__ in ('__console__', '__main__'):
             tweets = open_db()
             with open(prequeue, 'r') as newtweets:
                 for idx, line in enumerate(newtweets):
-                    print((idx, line))
-                    tweets.insert({'text': line.replace('\n',''), 'posted': False})
-            print('{} tweets sent to local database'.format(idx))
+                    if '"' in line:
+                        print((idx, line))
+                        tweets.insert({'text': line.replace('\n',''), 'posted': False})
+
+            print('{} tweets sent to local database'.format(idx + 1))       # Great idx + 1 here
             os.remove(prequeue)
 
     # Tweets database
