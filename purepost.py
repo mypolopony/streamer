@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-10-31 22:46:44
+# @Last Modified time: 2020-10-31 22:55:25
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -169,9 +169,12 @@ def console_input():
         pprint(tweets.stats())
         pprint('Posted: {}'.format(tweets.get()))
         pprint('Unposted: {}'.format())
+        sys.exit(0)
 
 def load_extant():
     '''
+    [DEPRECATED]
+
     Extant tweets are retrieved from manual download of account history from 
     Twitter. Unfortunately, the format needs to be pre-processed since Twitter
     produces invalid JSON. As long as this project remains in tact, it only needs
@@ -202,18 +205,13 @@ def load_extant():
 
     return
 
-# Main things
-if __name__ in ('__console__', '__main__'):
 
+if __name__ in ('__console__', '__main__'):
+    # Say hello
     pprint('Tervetuloa! Welcome!')
 
-    '''
-    # ONE TIMER (hopefully)
-    # Initiate (this only needs to be done once). This will also load the extant
-    # tweets
-    if not os.path.exists(tweetdb):
-        load_extant()
-    '''
+    # Parse arguments
+    console_input()
 
     # The queue, TWEETME, is just a flat file of current brilliant musings. It is of
     # some satisfaction to amass a respectable list before sending it to the *actual*
