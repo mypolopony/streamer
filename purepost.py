@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-10-31 23:28:15
+# @Last Modified time: 2020-10-31 23:31:23
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -43,7 +43,7 @@ tweetdb = 'tweetdb.json'
 
 def random_wait_time(min_hours = 3, max_hours = 6):
     '''
-    General delay. In terms of posting, somewhere in the hour-range
+    General delay. In terms of posting, somewhere in the hour-range, ewruena in seconds
     '''
 
     return random.uniform(min_hours, max_hours) * 60 * 60
@@ -180,8 +180,8 @@ def console_input():
         num_posted = tweets.count(Tweet.posted == True)
         num_unposted = tweets.count(Tweet.posted == False)
 
-        pprint('Posted: {}'.format(num_posted)
-        pprint('Unpsted: {}'.format(num_unposted)
+        pprint('Posted: {}'.format(num_posted))
+        pprint('Unpsted: {}'.format(num_unposted))
         pprint('Approximate Remaining Unposted Time: {}'.format(num_unposted, wait_time))
 
         sys.exit(0)
@@ -266,7 +266,7 @@ if __name__ in ('__console__', '__main__'):
 
 
         # Wait 3 - 6 hours
-        seconds = next_update()
+        seconds = random_wait_time()
         pprint('Next update in {} seconds ({} hours)'.format(seconds, round(seconds/60/60, 1)))
                 
         time.sleep(seconds)
