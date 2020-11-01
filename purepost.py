@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-10-31 23:31:23
+# @Last Modified time: 2020-11-01 01:08:18
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -26,6 +26,13 @@ from tinydb import TinyDB, Query
 from tweepy import OAuthHandler, API
 
 
+def pprint(msg):
+    '''
+    Our own special pretty-print. This has to be above everything else
+    '''
+    print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
+
+
 # Twitter authentication
 auth = OAuthHandler(credentials.key, credentials.secret)
 auth.set_access_token(credentials.authkey, credentials.authsecret)
@@ -40,20 +47,16 @@ pprint('API connected')
 # because I really hate SQL. I think it jus uses JSON for storage. . .
 tweetdb = 'tweetdb.json'
 
+# Random
+random.seed()
+
 
 def random_wait_time(min_hours = 3, max_hours = 6):
     '''
-    General delay. In terms of posting, somewhere in the hour-range, ewruena in seconds
+    General delay. In terms of posting, somewhere in the hour-range, return in seconds
     '''
 
     return random.uniform(min_hours, max_hours) * 60 * 60
-
-
-def pprint(msg):
-    '''
-    Our own special pretty-print
-    '''
-    print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
 
 
 def convert(seconds):
@@ -156,7 +159,7 @@ def console_input():
     via: alias tweet='f(){ echo $1 >> ~/Projects/streamer/TWEETME }; f'
     via alias tweet='f(){ /usr/local/bin/python3 ~/Projects/streamer/purepost.py add'
 
-    TODO: Tjos logic clearly needs to be changed
+    TODO: This logic clearly needs to be changed
     '''
 
     # Check arguments
@@ -175,14 +178,19 @@ def console_input():
 
         sys.exit(0)
     elif mode == 'status':
+        # Database
         tweets = open_db()
 
+        # Generic Tweet
+        Tweet = Query()
+
+        # Summary
         num_posted = tweets.count(Tweet.posted == True)
         num_unposted = tweets.count(Tweet.posted == False)
 
         pprint('Posted: {}'.format(num_posted))
         pprint('Unpsted: {}'.format(num_unposted))
-        pprint('Approximate Remaining Unposted Time: {}'.format(num_unposted, wait_time))
+        pprint('Approximate Remaining Unposted Time: {}'.format(random_wait_time()))
 
         sys.exit(0)
 
