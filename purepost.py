@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-11-01 01:08:18
+# @Last Modified time: 2020-11-01 01:09:40
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
