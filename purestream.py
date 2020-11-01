@@ -7,8 +7,10 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from pprint import pprint
 import os
 import sys
+import json
 import credentials          # Non-gitted credentials
 
 # Destination directory
@@ -45,12 +47,21 @@ class StdOutListener(StreamListener):
                 # This is actually a lot of opening and closing; the alternative
                 # would be to open the files during initialization, then refer
                 # to them that way.
-                cleantext = status.text.replace('\n','').lower()
+                try:
+                    text = status.extended_tweet['full_text']
+                except Exception as e:
+                    text = status.text
+
+                text = text.replace('\n', '').lower()
+
+                print('{}\t{}'.format(status.created_at, text))
+
                 self.outfile.write('{}\t{}\t{}\t{}\n'.format(
                         status.author.screen_name,
                         status.created_at,
                         status.source, 
-                        cleantext))
+                        text))
+
         except Exception as e:
             # Catch any unicode errors while printing to console
             # and just ignore them: quantity > quality in this case

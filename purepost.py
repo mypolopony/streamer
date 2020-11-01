@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-06-23 13:57:48
+# @Last Modified time: 2020-10-31 22:46:44
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -108,7 +108,7 @@ def time_analysis():
         assert(re_result == parse_result)
 
     except AssertionError:
-        print('Sorry, your parser is broken [this shouldn\'t happen]')
+        pprint('Sorry, your parser is broken [this shouldn\'t happen]')
 
 
     # Sanity check on the date parsing
@@ -129,7 +129,7 @@ def time_analysis():
         assert(dt_dateparser == dt_dateutil == dt_datetime)
     
     except AssertionError:
-        print('Sorry, your date-time interpreter is broken [this shouldn\'t happen]')
+        pprint('Sorry, your date-time interpreter is broken [this shouldn\'t happen]')
 
 
     '''
@@ -139,16 +139,16 @@ def time_analysis():
 
 def console_input():
     '''
-    # !!DEPRECATED!! 
-    via: alias tweet='f(){ echo $1 >> ~/Projects/streamer/TWEETME }; f'
+    Alternatives include:
 
-    # [not-yet] UN-DEPRECATED
-    via alias tweet='f(){
-        /usr/local/bin/python3 ~/Projects/streamer/purepost.py add'
+    via: alias tweet='f(){ echo $1 >> ~/Projects/streamer/TWEETME }; f'
+    via alias tweet='f(){ /usr/local/bin/python3 ~/Projects/streamer/purepost.py add'
+
+    TODO: Tjos logic clearly needs to be changed
     '''
 
     # Check arguments
-    if len(sys.argv) == 1 or sys.argv[1] not in ('add', 'run'):
+    if len(sys.argv) == 1 or sys.argv[1] not in ('add', 'run', 'status'):
         pprint('Use an argument: add or run')
         sys.exit(0)
     else:
@@ -163,6 +163,12 @@ def console_input():
         pprint('Added to Queue: {}'.format(post))
 
         sys.exit(0)
+    elif mode == 'status':
+        pprint('Database Status:')
+        pprint(tweets.command('collstats', 'events'))
+        pprint(tweets.stats())
+        pprint('Posted: {}'.format(tweets.get()))
+        pprint('Unposted: {}'.format())
 
 def load_extant():
     '''
@@ -221,15 +227,13 @@ if __name__ in ('__console__', '__main__'):
             with open(prequeue, 'r') as newtweets:
                 for idx, line in enumerate(newtweets):
                     if '"' in line:
-                        print((idx, line))
-                        tweets.insert({'text': line.replace('\n',''), 'posted': False})
+                        line = line.strip()
+                        pprint((idx, line))
+                        tweets.insert({'text': line, 'posted': False})
 
-            print('{} tweets sent to local database'.format(idx + 1))       # Great idx + 1 here
+            pprint('{} tweets sent to local database'.format(idx + 1))       # Great idx + 1 here
             os.remove(prequeue)
 
-    # Tweets database
-    tweets = open_db() 
-    
     # Post loop
     while True:
         # Have to re-establish connection (it times out, which is less than ideal since
@@ -237,6 +241,7 @@ if __name__ in ('__console__', '__main__'):
         # still open but. . . this is TinyDB for a reason. . .
         tweets = open_db()
 
+        # A new tweet, if it exists
         Tweet = Query()
         post = tweets.get(Tweet.posted == False)
 
