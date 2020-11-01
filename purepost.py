@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-11-01 01:19:16
+# @Last Modified time: 2020-11-01 10:24:33
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -145,11 +145,34 @@ def time_analysis():
     except AssertionError:
         pprint('Sorry, your date-time interpreter is broken [this shouldn\'t happen]')
 
+    
+    # After all of that, we just have to pick one, I guess. Everything above was just flossing, the real
+    # question is: why do the time differences seem. . . different to me. . .
+    
 
+def check_tweetme():
     '''
-    After all of that, we just have to pick one, I guess. Everything above was just flossing, the real
-    question is: why do the time differences seem. . . different to me. . .
+    The queue, TWEETME, is just a flat file of current brilliant musings. It is of
+    some satisfaction to amass a respectable list before sending it to the *actual*
+    database queue, and a flat file one Command+Tab away is comforting to me. Nevertheless,
+    these (pre-)queues posts have to be scooped up at some point. Let's just have
+    the user decide whether she wants to do it now or defer.
     '''
+
+    prequeue = 'TWEETME'
+    if os.path.exists(prequeue):
+        if input('TWEETME File Found. Send to DB? ("y" for yes): ') == 'y':
+            tweets = open_db()
+            with open(prequeue, 'r') as newtweets:
+                for idx, line in enumerate(newtweets):
+                    if '"' in line:
+                        line = line.strip()
+                        pprint((idx, line))
+                        tweets.insert({'text': line, 'posted': False})
+
+            pprint('{} tweets sent to local database'.format(idx + 1))       # Great idx + 1 here
+            os.remove(prequeue)
+
 
 
 def console_input():
@@ -235,29 +258,13 @@ if __name__ in ('__console__', '__main__'):
     # Say hello
     pprint('Tervetuloa! Welcome!')
 
+    # Suggest adding to the database
+    check_tweetme()
+
     # Parse arguments
     console_input()
 
-    # The queue, TWEETME, is just a flat file of current brilliant musings. It is of
-    # some satisfaction to amass a respectable list before sending it to the *actual*
-    # database queue, and a flat file one Command+Tab away is comforting to me. Nevertheless,
-    # these (pre-)queues posts have to be scooped up at some point. Let's just have
-    # the user decide whether she wants to do it now or defer.
-    prequeue = 'TWEETME'
-    if os.path.exists(prequeue):
-        if input('TWEETME File Found. Send to DB? ("y" for yes): ') == 'y':
-            tweets = open_db()
-            with open(prequeue, 'r') as newtweets:
-                for idx, line in enumerate(newtweets):
-                    if '"' in line:
-                        line = line.strip()
-                        pprint((idx, line))
-                        tweets.insert({'text': line, 'posted': False})
-
-            pprint('{} tweets sent to local database'.format(idx + 1))       # Great idx + 1 here
-            os.remove(prequeue)
-
-    # Post loop
+    # Post loop (Default behavior)
     while True:
         # Have to re-establish connection (it times out, which is less than ideal since
         # this will potentially run forever. . . -- we would ideally like to see if it's 
