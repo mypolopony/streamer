@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-10-31 22:55:25
+# @Last Modified time: 2020-10-31 23:10:55
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -22,7 +22,6 @@ import random
 import argparse
 import datetime
 import credentials                      # Non-gitted credentials
-from pymongo import MongoClient
 from tinydb import TinyDB, Query
 from tweepy import OAuthHandler, API
 
@@ -155,7 +154,6 @@ def console_input():
         # Mode
         mode = sys.argv[1]
 
-    # Add via command line
     if mode == 'add':
         post = '"' + ' '.join(sys.argv[2:]) + '"'
 
@@ -164,11 +162,12 @@ def console_input():
 
         sys.exit(0)
     elif mode == 'status':
-        pprint('Database Status:')
-        pprint(tweets.command('collstats', 'events'))
-        pprint(tweets.stats())
-        pprint('Posted: {}'.format(tweets.get()))
-        pprint('Unposted: {}'.format())
+        tweets = open_db()
+
+        pprint('Posted: {}'.format(tweets.count(Tweet.posted == True)))
+        pprint('Unpsted: {}'.format(tweets.count(Tweet.posted == False)))
+        pprint('Remaining Unposted Time: {}'.)
+
         sys.exit(0)
 
 def load_extant():
