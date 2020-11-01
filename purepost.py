@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-10-31 23:10:55
+# @Last Modified time: 2020-10-31 23:28:15
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -26,12 +26,6 @@ from tinydb import TinyDB, Query
 from tweepy import OAuthHandler, API
 
 
-def pprint(msg):
-    '''
-    Our own special pretty-print
-    '''
-    print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
-
 # Twitter authentication
 auth = OAuthHandler(credentials.key, credentials.secret)
 auth.set_access_token(credentials.authkey, credentials.authsecret)
@@ -46,11 +40,28 @@ pprint('API connected')
 # because I really hate SQL. I think it jus uses JSON for storage. . .
 tweetdb = 'tweetdb.json'
 
+
+def random_wait_time(min_hours = 3, max_hours = 6):
+    '''
+    General delay. In terms of posting, somewhere in the hour-range
+    '''
+
+    return random.uniform(min_hours, max_hours) * 60 * 60
+
+
+def pprint(msg):
+    '''
+    Our own special pretty-print
+    '''
+    print('{}: {}'.format(datetime.datetime.now().strftime('%c'), msg))
+
+
 def convert(seconds):
     '''
     Nicer time display
     '''
     return time.strftime("%H:%M:%S", time.gmtime(n))
+
 
 def open_db():
     # Local tweet database
@@ -58,6 +69,7 @@ def open_db():
     tweets = TinyDB.table(db, 'tweets')
 
     return tweets
+
 
 def time_analysis():
     '''
@@ -136,6 +148,7 @@ def time_analysis():
     question is: why do the time differences seem. . . different to me. . .
     '''
 
+
 def console_input():
     '''
     Alternatives include:
@@ -164,11 +177,15 @@ def console_input():
     elif mode == 'status':
         tweets = open_db()
 
-        pprint('Posted: {}'.format(tweets.count(Tweet.posted == True)))
-        pprint('Unpsted: {}'.format(tweets.count(Tweet.posted == False)))
-        pprint('Remaining Unposted Time: {}'.)
+        num_posted = tweets.count(Tweet.posted == True)
+        num_unposted = tweets.count(Tweet.posted == False)
+
+        pprint('Posted: {}'.format(num_posted)
+        pprint('Unpsted: {}'.format(num_unposted)
+        pprint('Approximate Remaining Unposted Time: {}'.format(num_unposted, wait_time))
 
         sys.exit(0)
+
 
 def load_extant():
     '''
@@ -249,7 +266,7 @@ if __name__ in ('__console__', '__main__'):
 
 
         # Wait 3 - 6 hours
-        seconds = random.uniform(3, 6) * 60 * 60
+        seconds = next_update()
         pprint('Next update in {} seconds ({} hours)'.format(seconds, round(seconds/60/60, 1)))
                 
         time.sleep(seconds)
