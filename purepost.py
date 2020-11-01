@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-11-01 01:09:40
+# @Last Modified time: 2020-11-01 01:19:16
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -189,8 +189,9 @@ def console_input():
         num_unposted = tweets.count(Tweet.posted == False)
 
         pprint('Posted: {}'.format(num_posted))
-        pprint('Unpsted: {}'.format(num_unposted))
-        pprint('Approximate Remaining Unposted Time: {}'.format(random_wait_time()))
+        pprint('Unposted: {}'.format(num_unposted))
+        seconds_left = random_wait_time() * num_unposted
+        pprint('Approximate Remaining Unposted Time: ' + time.strftime('%-m months, %-d days', time.gmtime(seconds_left)))
 
         sys.exit(0)
 
