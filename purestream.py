@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-11-18 01:29:04
+# @Last Modified time: 2020-11-18 01:31:11
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -61,7 +61,7 @@ class StdOutListener(StreamListener):
                 text = text.replace('\n', '').lower()
 
                 print('{}\t{}'.format(status.created_at, text))
-                
+
                 self.outfile.write('{}\t{}\t{}\t{}\n'.format(
                         status.author.screen_name,
                         status.created_at,
@@ -95,14 +95,14 @@ class StdOutListener(StreamListener):
         print('Timeout reached')
 
 
-def main(targets):
+def main(args):
     # Authentication to Twitter Streaming API
     auth = OAuthHandler(credentials.key, credentials.secret)
     auth.set_access_token(credentials.authkey, credentials.authsecret)
 
     # The stream
-    stream = Stream(auth, StdOutListener(targets))
-    stream.filter(None, targets)
+    stream = Stream(auth, StdOutListener(args.targets, args.verbose))
+    stream.filter(None, args.targets)
 
 
 if __name__ in ('__console__', '__main__'):
@@ -122,4 +122,4 @@ if __name__ in ('__console__', '__main__'):
     if args.verbose:
         print('Verbose Mode: ON')
 
-    main(args.targets)
+    main(args)
