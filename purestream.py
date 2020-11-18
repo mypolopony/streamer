@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
-# @Last Modified by:   mypolopony
-# @Last Modified time: 2020-05-11 03:42:57
+# @Last Modified by:   Selwyn-Lloyd McPherson
+# @Last Modified time: 2020-11-18 01:29:04
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -11,6 +11,7 @@ from pprint import pprint
 import os
 import sys
 import json
+import argparse
 import credentials          # Non-gitted credentials
 
 # Destination directory
@@ -22,7 +23,7 @@ if not os.path.exists(dest_dir):
 # We extend it to take the output file
 class StdOutListener(StreamListener):
 
-    def __init__(self, targets):
+    def __init__(self, targets, verbose = False):
         # This is the fun 'super' call required when overriding __init__
         super(StdOutListener, self).__init__()
 
@@ -36,6 +37,9 @@ class StdOutListener(StreamListener):
         # uneasy to me. . .
         self.outfile = open(os.path.join(dest_dir, self.outname), 'a')
 
+        # Log level (to console)
+        self.verbose = verbose
+
     def on_status(self, status):
         '''
         A message has been received
@@ -48,6 +52,8 @@ class StdOutListener(StreamListener):
                 # would be to open the files during initialization, then refer
                 # to them that way.
                 try:
+                    if self.verbose:
+                        print('\n++ Status ++\n{}\n'.format(str(status)))
                     text = status.extended_tweet['full_text']
                 except Exception as e:
                     text = status.text
@@ -55,7 +61,7 @@ class StdOutListener(StreamListener):
                 text = text.replace('\n', '').lower()
 
                 print('{}\t{}'.format(status.created_at, text))
-
+                
                 self.outfile.write('{}\t{}\t{}\t{}\n'.format(
                         status.author.screen_name,
                         status.created_at,
@@ -70,15 +76,15 @@ class StdOutListener(StreamListener):
 
     def on_error(self, status_code):
         '''
-		Here is a fun thing to notice:
+        Here is a fun thing to notice:
 
-		If you try to run the streamer in two processes, you might get killed with a 420 error.
+        If you try to run the streamer in two processes, you might get killed with a 420 error.
 
-		This occurred because I was not certain about capitalization, and tried two 
-		separate instantiations to compare the difference. Unfortunately, that overloaded
-		the API and I was (likely temporarily) shut out. Makes sense!
-		'''
-		
+        This occurred because I was not certain about capitalization, and tried two 
+        separate instantiations to compare the difference. Unfortunately, that overloaded
+        the API and I was (likely temporarily) shut out. Makes sense!
+        '''
+        
         print('Error: {}'.format(status_code))
         return True
 
@@ -100,12 +106,20 @@ def main(targets):
 
 
 if __name__ in ('__console__', '__main__'):
-    # Take arguments as targets
-    targets = sys.argv[1:]
+    # Handle arguments
+    parser = argparse.ArgumentParser()
 
-    # Ensure validity
-    if not targets:
-        print('Use a space separated set of arguments to specify targets')
-    else:
-        print('Targets: {}'.format(targets))
-        main(targets)
+    parser.add_argument('targets', type=str, nargs='*',
+                        help='Search terms, quotes respected')
+    parser.add_argument('-v', '--verbose', action='store_true', default=False,
+                        help='Debug mode / increase output verbosity')
+    args = parser.parse_args()
+
+    # Targets
+    print('Targets: {}'.format(args.targets))
+
+    # Run
+    if args.verbose:
+        print('Verbose Mode: ON')
+
+    main(args.targets)
