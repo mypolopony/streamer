@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2021-01-09 22:52:32
+# @Last Modified time: 2021-01-09 23:01:01
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -174,7 +174,6 @@ def check_tweetme():
             os.remove(prequeue)
 
 
-
 def run_task(mode):
     '''
     Alternatives include:
@@ -209,8 +208,8 @@ def run_task(mode):
         pprint('Approximate Remaining Unposted Time: ' + time.strftime('%-m months, %-d days', time.gmtime(seconds_left)))
 
         sys.exit(0)
-
-    sys.exit(0)
+    elif mode =='run':
+        post_loop()
 
 
 def load_extant():
@@ -249,7 +248,10 @@ def load_extant():
 
 
 def post_loop():
-    # Post loop (Default behavior)
+    '''
+    Periodically posting from DB to Twitter
+    '''
+    
     while True:
         # Have to re-establish connection (it times out, which is less than ideal since
         # this will potentially run forever. . . -- we would ideally like to see if it's 
@@ -277,10 +279,12 @@ if __name__ in ('__console__', '__main__'):
     # Say hello
     pprint('Tervetuloa! Welcome!')
 
-    # Suggest adding to the database
+    # Suggest adding to the database (default behavior)
     check_tweetme()
 
     # Parse arguments
-    console_input()
-
-
+    if len(sys.argv) > 1:
+        run_task()
+    else:
+        print('No mode slected, stopping')
+    
