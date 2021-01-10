@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-11-01 10:24:33
+# @Last Modified time: 2021-01-09 22:52:32
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -175,7 +175,7 @@ def check_tweetme():
 
 
 
-def console_input():
+def run_task(mode):
     '''
     Alternatives include:
 
@@ -184,14 +184,6 @@ def console_input():
 
     TODO: This logic clearly needs to be changed
     '''
-
-    # Check arguments
-    if len(sys.argv) == 1 or sys.argv[1] not in ('add', 'run', 'status'):
-        pprint('Use an argument: add or run')
-        sys.exit(0)
-    else:
-        # Mode
-        mode = sys.argv[1]
 
     if mode == 'add':
         post = '"' + ' '.join(sys.argv[2:]) + '"'
@@ -217,6 +209,8 @@ def console_input():
         pprint('Approximate Remaining Unposted Time: ' + time.strftime('%-m months, %-d days', time.gmtime(seconds_left)))
 
         sys.exit(0)
+
+    sys.exit(0)
 
 
 def load_extant():
@@ -254,16 +248,7 @@ def load_extant():
     return
 
 
-if __name__ in ('__console__', '__main__'):
-    # Say hello
-    pprint('Tervetuloa! Welcome!')
-
-    # Suggest adding to the database
-    check_tweetme()
-
-    # Parse arguments
-    console_input()
-
+def post_loop():
     # Post loop (Default behavior)
     while True:
         # Have to re-establish connection (it times out, which is less than ideal since
@@ -286,3 +271,16 @@ if __name__ in ('__console__', '__main__'):
         pprint('Next update in {} seconds ({} hours)'.format(seconds, round(seconds/60/60, 1)))
                 
         time.sleep(seconds)
+
+
+if __name__ in ('__console__', '__main__'):
+    # Say hello
+    pprint('Tervetuloa! Welcome!')
+
+    # Suggest adding to the database
+    check_tweetme()
+
+    # Parse arguments
+    console_input()
+
+
