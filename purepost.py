@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2021-01-09 23:01:01
+# @Last Modified time: 2021-01-13 18:26:20
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -284,7 +284,7 @@ if __name__ in ('__console__', '__main__'):
 
     # Parse arguments
     if len(sys.argv) > 1:
-        run_task()
+        run_task(sys.argv[1])
     else:
         print('No mode slected, stopping')
     
