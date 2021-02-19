@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2021-01-13 18:26:20
+# @Last Modified time: 2021-02-19 03:34:05
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -51,7 +51,7 @@ tweetdb = 'tweetdb.json'
 random.seed()
 
 
-def random_wait_time(min_hours = 3, max_hours = 6):
+def random_wait_time(min_hours = 8, max_hours = 12):
     '''
     General delay. In terms of posting, somewhere in the hour-range, return in seconds
     '''
@@ -184,13 +184,6 @@ def run_task(mode):
     TODO: This logic clearly needs to be changed
     '''
 
-    if mode == 'add':
-        post = '"' + ' '.join(sys.argv[2:]) + '"'
-
-        db.queue.insert_one({'text': post})
-        pprint('Added to Queue: {}'.format(post))
-
-        sys.exit(0)
     elif mode == 'status':
         # Database
         tweets = open_db()
@@ -202,10 +195,19 @@ def run_task(mode):
         num_posted = tweets.count(Tweet.posted == True)
         num_unposted = tweets.count(Tweet.posted == False)
 
+        pprint('------------------------------------')
         pprint('Posted: {}'.format(num_posted))
         pprint('Unposted: {}'.format(num_unposted))
         seconds_left = random_wait_time() * num_unposted
         pprint('Approximate Remaining Unposted Time: ' + time.strftime('%-m months, %-d days', time.gmtime(seconds_left)))
+        pprint('------------------------------------')
+
+        # Show remaining
+        pprint('Left to post:')
+        Tweet = Query()
+        todo = tweets.search(Tweet.posted == False)
+        for idx, item in enumerate(todo):
+            pprint('{}:\t{}'.format(idx+1, item['text']))
 
         sys.exit(0)
     elif mode =='run':
@@ -268,7 +270,7 @@ def post_loop():
             tweets.update({'posted':True}, doc_ids = [post.doc_id])
 
 
-        # Wait 3 - 6 hours
+        # Wait
         seconds = random_wait_time()
         pprint('Next update in {} seconds ({} hours)'.format(seconds, round(seconds/60/60, 1)))
                 
@@ -286,5 +288,5 @@ if __name__ in ('__console__', '__main__'):
     if len(sys.argv) > 1:
         run_task(sys.argv[1])
     else:
-        print('No mode slected, stopping')
+        print('No mode slected, nothing to be done')
     
