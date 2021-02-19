@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2021-02-19 03:34:05
+# @Last Modified time: 2021-02-19 03:35:47
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -184,7 +184,7 @@ def run_task(mode):
     TODO: This logic clearly needs to be changed
     '''
 
-    elif mode == 'status':
+    if mode == 'status':
         # Database
         tweets = open_db()
 
@@ -212,6 +212,8 @@ def run_task(mode):
         sys.exit(0)
     elif mode =='run':
         post_loop()
+    else:
+        print('Mode not understood, quitting now')
 
 
 def load_extant():
