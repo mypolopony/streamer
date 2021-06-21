@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2021-02-19 03:35:47
+# @Last Modified time: 2021-06-20 22:11:40
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -51,7 +51,7 @@ tweetdb = 'tweetdb.json'
 random.seed()
 
 
-def random_wait_time(min_hours = 8, max_hours = 12):
+def random_wait_time(min_hours = 24, max_hours = 48):
     '''
     General delay. In terms of posting, somewhere in the hour-range, return in seconds
     '''
@@ -158,8 +158,9 @@ def check_tweetme():
     these (pre-)queues posts have to be scooped up at some point. Let's just have
     the user decide whether she wants to do it now or defer.
     '''
-
     prequeue = 'TWEETME'
+    pprint('Checking existence of {}'.format(prequeue))
+
     if os.path.exists(prequeue):
         if input('TWEETME File Found. Send to DB? ("y" for yes): ') == 'y':
             tweets = open_db()
