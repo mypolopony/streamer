@@ -51,7 +51,7 @@ tweetdb = 'tweetdb.json'
 random.seed()
 
 
-def random_wait_time(min_hours = 24, max_hours = 48):
+def random_wait_time(min_hours = 12, max_hours = 24):
     '''
     General delay. In terms of posting, somewhere in the hour-range, return in seconds
     '''
