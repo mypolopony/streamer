@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2021-06-20 22:11:40
+# @Last Modified time: 2022-12-15 17:21:37
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -106,7 +106,7 @@ def open_db():
 def time_analysis():
     '''
     This is one of the most frustrating Pythonic experiences of all time.
-    This method is not intended to be used functunally, but only for analysis and practice.
+    This method is not intended to be used functionally, but only for analysis and practice.
 
     We receive, from the main program, this. . . Keep in mind I use double quotes in-code
     and single quotes for comments. . . Just my style I guess. . .
@@ -126,7 +126,7 @@ def time_analysis():
 
     '''
     The large discontinuities due to closing the app, restarting the computer, whatever, but
-    it's easily parsible.
+    it's easily parsable.
 
     At this point, we are archeologists, so let's not bother with actual coding practices
     '''
@@ -168,7 +168,7 @@ def time_analysis():
         from datetime import datetime, time
         dt_datetime = datetime.strptime('2015-01-01 01:00:00', '%Y-%m-%d %H:%M:%S')
 
-        # What's the differene? Clearly nothing
+        # What's the difference? Clearly nothing
         assert(dt_dateparser == dt_dateutil == dt_datetime)
     
     except AssertionError:
@@ -320,5 +320,5 @@ if __name__ in ('__console__', '__main__'):
     if len(sys.argv) > 1:
         run_task(sys.argv[1])
     else:
-        print('No mode slected, nothing to be done')
+        print('No mode selected, nothing to be done')
     
