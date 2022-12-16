@@ -59,11 +59,40 @@ def random_wait_time(min_hours = 12, max_hours = 24):
     return random.uniform(min_hours, max_hours) * 60 * 60
 
 
+# [DEPRECATED]
 def convert(seconds):
     '''
     Nicer time display
     '''
     return time.strftime("%H:%M:%S", time.gmtime(n))
+
+
+def display_time(seconds, granularity=3):
+    '''
+    Even nicer date display with flexibility (using granularity) for 
+    most significant weeks, days, hours, minutes, and seconds
+    '''
+    intervals = (
+        ('weeks', 604800),  # 60 * 60 * 24 * 7
+        ('days', 86400),    # 60 * 60 * 24
+        ('hours', 3600),    # 60 * 60
+        ('minutes', 60),
+        ('seconds', 1),
+    )
+
+    result = []
+
+    for name, count in intervals:
+        value = seconds // count
+        if value:
+            seconds -= value * count
+            if value == 1:
+                name = name.rstrip('s')
+            result.append("{} {}".format(int(value), name))
+
+    return ', '.join(result[:granularity])
+
+
 
 
 def open_db():
@@ -200,7 +229,7 @@ def run_task(mode):
         pprint('Posted: {}'.format(num_posted))
         pprint('Unposted: {}'.format(num_unposted))
         seconds_left = random_wait_time() * num_unposted
-        pprint('Approximate Remaining Unposted Time: ' + time.strftime('%-m months, %-d days', time.gmtime(seconds_left)))
+        pprint('Approximate Remaining Unposted Time: ' + display_time(seconds_left))
         pprint('------------------------------------')
 
         # Show remaining
