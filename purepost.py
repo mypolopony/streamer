@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2022-12-15 17:21:37
+# @Last Modified time: 2023-04-22 23:54:25
 
 '''
 I often find turns of phrase that I think are pithy enough to etch
@@ -34,8 +34,8 @@ def pprint(msg):
 
 
 # Twitter authentication
-auth = OAuthHandler(credentials.key, credentials.secret)
-auth.set_access_token(credentials.authkey, credentials.authsecret)
+auth = OAuthHandler(credentials.consumer_key, credentials.consumer_key_secret,
+                    credentials.access_token, credentials.access_token_secret)
 pprint('Authenticated')
 
 # Twitter / Tweepy API
@@ -57,14 +57,6 @@ def random_wait_time(min_hours = 12, max_hours = 24):
     '''
 
     return random.uniform(min_hours, max_hours) * 60 * 60
-
-
-# [DEPRECATED]
-def convert(seconds):
-    '''
-    Nicer time display
-    '''
-    return time.strftime("%H:%M:%S", time.gmtime(n))
 
 
 def display_time(seconds, granularity=3):
@@ -91,8 +83,6 @@ def display_time(seconds, granularity=3):
             result.append("{} {}".format(int(value), name))
 
     return ', '.join(result[:granularity])
-
-
 
 
 def open_db():
@@ -300,7 +290,6 @@ def post_loop():
             _ = api.update_status(post['text'])
             pprint('Post Successful: {}'.format(post['text']))
             tweets.update({'posted':True}, doc_ids = [post.doc_id])
-
 
         # Wait
         seconds = random_wait_time()
