@@ -2,7 +2,7 @@
 # @Author: Selwyn-Lloyd
 # @Date:   2019-02-15 13:11:16
 # @Last Modified by:   Selwyn-Lloyd McPherson
-# @Last Modified time: 2020-11-18 01:31:11
+# @Last Modified time: 2023-04-09 22:43:19
 
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
@@ -56,7 +56,7 @@ class StdOutListener(StreamListener):
                         print('\n++ Status ++\n{}\n'.format(str(status)))
                     text = status.extended_tweet['full_text']
                 except Exception as e:
-                    text = status.text
+                    text = print(f'Status Error: {status.text}')
 
                 text = text.replace('\n', '').lower()
 
@@ -71,7 +71,7 @@ class StdOutListener(StreamListener):
         except Exception as e:
             # Catch any unicode errors while printing to console
             # and just ignore them: quantity > quality in this case
-            print(e)
+            print(f'There was an error: {e}')
             pass
 
     def on_error(self, status_code):
@@ -92,7 +92,7 @@ class StdOutListener(StreamListener):
         '''
         Timeout, likely loss of connection
         '''
-        print('Timeout reached')
+        print('Error: Timeout reached')
 
 
 def main(args):
